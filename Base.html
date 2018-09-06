@@ -39,19 +39,23 @@ body, html {
 </p>
 
 <script>
+
+var makeA;
+var downA;
+
 function getRandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
 function playGame(){
 	makePlayer();
-	setInterval(makeAlien, 1000);
-	setInterval(downAll, 250);
-	//setInterval(shoot, 500);
+	makeA = setInterval(makeAlien, 500);
+	downA = setInterval(downAll, 250);
 	
 }
 
 console.log(getRandomInt(5));
+
 
 function downAll(){
 	var preElements = document.getElementsByTagName('pre');
@@ -59,6 +63,16 @@ function downAll(){
 		var current = preElements[i];
 		var rect = current.getBoundingClientRect();
 		current.style.top = rect.top + 50 + "px";
+		if(rect.bottom >= 1000){
+				window.clearInterval(makeA);
+				window.clearInterval(downA);
+				var parent = document.getElementById("test");
+				while (test.firstChild) {
+					test.removeChild(test.firstChild);
+				}
+
+				alert("You lose");
+		}
 	}
 }
 
@@ -93,12 +107,15 @@ function playerAction(){
 	if (kay == 119){
 		var player = document.getElementById("player");
 		var preElements = document.getElementsByTagName('pre');
+label1: {
 		for(var i = 0; i < preElements.length; ++ i){
 			if(player.style.left == preElements[i].style.left){
 				var parent = document.getElementById("test");
 				//var child = document.getElementById("p1");
 				parent.removeChild(preElements[i]);
+				break label1;
 			}
+		}
 		}
 	}
 	else if (kay == 97){
