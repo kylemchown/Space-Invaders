@@ -32,6 +32,12 @@ body, html {
 
 
 <input type="button" onclick="playGame()" value="Down" /><br>
+<input 	id = "boxVis"
+			type="number"
+			placeholder="Vis"
+			alt="Make Vis"
+			required="required"
+			readonly /><br>
 
 
 <p id="test">
@@ -49,12 +55,12 @@ function getRandomInt(max) {
 
 function playGame(){
 	makePlayer();
+	document.getElementById("boxVis").value = 0;
 	makeA = setInterval(makeAlien, 500);
 	downA = setInterval(downAll, 250);
 	
 }
 
-console.log(getRandomInt(5));
 
 
 function downAll(){
@@ -63,7 +69,9 @@ function downAll(){
 		var current = preElements[i];
 		var rect = current.getBoundingClientRect();
 		current.style.top = rect.top + 50 + "px";
-		if(rect.bottom >= 1000){
+		var player = document.getElementById("player");
+		var rect2 = player.getBoundingClientRect();
+		if(rect.bottom >= rect2.bottom){
 				window.clearInterval(makeA);
 				window.clearInterval(downA);
 				var parent = document.getElementById("test");
@@ -89,7 +97,7 @@ function makeAlien(){
 
 function makePlayer(){
 	var node = document.createElement("span");
-	var asd = "^";
+	var asd = "## \n##";
 	node.setAttribute("id", "player");
 	var textnode =  document.createTextNode(asd);
 	node.style.position = "absolute";
@@ -103,7 +111,6 @@ function makePlayer(){
 function playerAction(){
 	
 	var kay = event.keyCode;
-	console.log(kay);
 	if (kay == 119){
 		var player = document.getElementById("player");
 		var preElements = document.getElementsByTagName('pre');
@@ -113,6 +120,7 @@ label1: {
 				var parent = document.getElementById("test");
 				//var child = document.getElementById("p1");
 				parent.removeChild(preElements[i]);
+				document.getElementById("boxVis").value = parseInt(document.getElementById("boxVis").value) + 1;
 				break label1;
 			}
 		}
@@ -131,6 +139,9 @@ label1: {
 		if (rect.left<=200){
 			pla.style.left = rect.left + 50 + "px";
 		}
+	}
+	else if (kay == 13){
+		playGame();
 	}
 	
 }
